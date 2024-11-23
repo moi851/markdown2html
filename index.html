@@ -1,14 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- 뷰포트 메타 태그 추가 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="pageTitle">Markdown to HTML Converter with Inline Styles</title>
     
     <!-- Highlight.js CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
     
     <style>
+        /* 전체 박스 사이징 설정 */
+        * {
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -58,43 +63,94 @@
         .custom-scrollbar::-webkit-scrollbar-corner {
             background: #f0f0f0;
         }
+        /* 컨테이너 스타일 수정 */
         .container {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             gap: 6px;
             margin-bottom: 20px;
-            height: 700px;
-            resize: vertical;
-            overflow: auto;
+            height: auto;
+            overflow: hidden;
             border: 1px solid #ccc;
             padding: 10px;
-            box-sizing: border-box;
         }
-        textarea {
+        /* 미디어 쿼리 적용 */
+        @media(min-width: 768px) {
+            .container {
+                flex-direction: row;
+                height: 700px;
+            }
+            .input-container, #output-container {
+                flex: 1;
+                height: 100%;
+            }
+            #markdown, #output {
+                height: 100%;
+            }
+        }
+        /* 모바일에서 텍스트 영역과 출력 영역의 높이 조정 */
+        @media(max-width: 767px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+            .input-container, #output-container {
+                min-height: 400px;
+                width: 100%;
+            }
+        }
+        /* 입력 영역을 감싸는 컨테이너 */
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
+        /* textarea 스타일 */
+        #markdown {
             flex: 1;
             padding: 15px;
             font-size: 16px;
             border: 1px solid #ccc;
             resize: none;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-            height: 100%;
-            box-sizing: border-box;
+            overflow: auto;
+            background-color: #ffffff;
+            outline: none;
+            min-height: 300px;
+            width: 100%;
         }
+        /* 출력 영역을 감싸는 컨테이너 */
+        #output-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
+        /* 출력 영역 스타일 */
         #output {
             flex: 1;
-            border: 1px solid #ccc;
             padding: 15px;
             overflow: auto;
             background-color: #ffffff;
+            border: 1px solid #ccc;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-            height: 100%;
-            box-sizing: border-box;
+            min-height: 300px;
+            width: 100%;
         }
+        /* 옵션 섹션 스타일 */
         .options {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 10px;
             margin-top: 10px;
+        }
+        @media(min-width: 480px) {
+            .options {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
         }
         button {
             padding: 10px 20px;
@@ -106,6 +162,7 @@
             color: white;
             transition: background-color 0.3s ease;
             margin-left: 5px;
+            width: 100%;
         }
         button:hover {
             background-color: #218838;
@@ -129,73 +186,6 @@
             color: #6c757d;
             font-size: 14px;
         }
-
-        /* 모바일 대응 미디어 쿼리 */
-        @media screen and (max-width: 768px) {
-            main {
-                padding: 10px;
-            }
-            
-            .container {
-                flex-direction: column;
-                height: auto;
-                min-height: 500px;
-                gap: 10px;
-            }
-            
-            #markdown, #output {
-                width: 100%;
-                height: 300px;
-            }
-            
-            .options {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            button {
-                width: 100%;
-                margin: 5px 0;
-            }
-            
-            header {
-                padding: 10px 0;
-            }
-            
-            header h1 {
-                font-size: 1.5em;
-            }
-            
-            header p {
-                font-size: 0.9em;
-            }
-            
-            .checkbox-container {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        /* 작은 모바일 화면 대응 */
-        @media screen and (max-width: 480px) {
-            main {
-                padding: 5px;
-            }
-            
-            #markdown, #output {
-                height: 250px;
-                font-size: 14px;
-            }
-            
-            button {
-                padding: 8px 16px;
-                font-size: 14px;
-            }
-            
-            .checkbox-container {
-                font-size: 14px;
-            }
-        }
     </style>
     <!-- Marked.js 라이브러리 불러오기 -->
     <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
@@ -211,16 +201,20 @@
     </header>
     <main>
         <div class="container">
-            <textarea id="markdown" class="custom-scrollbar" placeholder="Enter your Markdown..."></textarea>
-            <div id="output" class="custom-scrollbar"></div>
+            <div class="input-container">
+                <textarea id="markdown" class="custom-scrollbar" placeholder="Enter your Markdown..."></textarea>
+            </div>
+            <div id="output-container">
+                <div id="output" class="custom-scrollbar"></div>
+            </div>
         </div>
         <div class="options">
             <div class="checkbox-container">
                 <input type="checkbox" id="useInlineStyles" checked>
                 <label for="useInlineStyles" id="useInlineStylesLabel">Use inline styles</label>
             </div>
-            <div>
-                <button id="copyStyledButton" onclick="copyStyledHTML()"></button>
+            <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                <button id="copyStyledButton" onclick="copyStyledHTML()">Copy Styled HTML</button>
                 <button id="copyButton" onclick="copyHTML()">Copy HTML</button>
             </div>
         </div>
@@ -567,31 +561,39 @@
         // 새로운 스타일 포함 HTML 복사 함수
         function copyStyledHTML() {
             if (!navigator.clipboard || !window.ClipboardItem) {
-                alert(t.copyStyledFailAlert);
+                // 구형 브라우저를 위한 폴백(fallback) 방식
+                const tempTextarea = document.createElement('textarea');
+                tempTextarea.value = outputDiv.innerText; // innerHTML 대신 innerText 사용
+                document.body.appendChild(tempTextarea);
+                tempTextarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempTextarea);
+                alert(t.copyStyledAlert);
                 return;
             }
 
             let htmlContent = outputDiv.innerHTML;
 
             if (useInlineStyles) {
-                // outputDiv를 클론
                 const clonedDiv = outputDiv.cloneNode(true);
-
-                // 인라인 스타일 적용
                 applyHighlightInlineStyles(clonedDiv);
-
-                // 필요하지 않은 클래스 제거
                 clonedDiv.querySelectorAll('*').forEach(el => {
-                    el.className = ''; // 모든 클래스 제거
+                    el.className = '';
                 });
-
-                // 클립보드에 복사할 HTML 생성
                 htmlContent = clonedDiv.innerHTML;
             }
 
-            // 클립보드에 복사
-            const blob = new Blob([htmlContent], { type: 'text/html' });
-            const data = [new ClipboardItem({ 'text/html': blob })];
+            // HTML과 일반 텍스트 모두 클립보드에 복사
+            const plainText = outputDiv.innerText;
+            const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+            const textBlob = new Blob([plainText], { type: 'text/plain' });
+            
+            const data = [
+                new ClipboardItem({
+                    'text/html': htmlBlob,
+                    'text/plain': textBlob
+                })
+            ];
 
             navigator.clipboard.write(data).then(() => {
                 alert(t.copyStyledAlert);
