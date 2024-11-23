@@ -35,6 +35,23 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             flex-shrink: 0;
         }
+        #headerTitle {
+            font-size: 24px;
+            margin: 0;
+            padding: 0;
+        }
+        @media(max-width: 767px) {
+            header {
+                padding: 5px 0;
+            }
+            #headerTitle {
+                font-size: 20px;
+            }
+            #headerSubtitle {
+                font-size: 14px;
+                margin: 5px 0;
+            }
+        }
         main {
             flex: 1;
             width: 100%;
@@ -203,7 +220,7 @@
 </head>
 <body>
     <header>
-        <h1 id="headerTitle">Markdown to HTML Converter</h1>
+        <p id="headerTitle">Markdown to HTML Converter</p>
         <p id="headerSubtitle">Enter Markdown and convert it to HTML</p>
     </header>
     <main>
