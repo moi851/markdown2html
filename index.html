@@ -14,15 +14,17 @@
         * {
             box-sizing: border-box;
         }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        html, body {
+            height: 100%;
             margin: 0;
             padding: 0;
+            overflow: hidden;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f0f2f5;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
         }
         header {
             width: 100%;
@@ -31,13 +33,17 @@
             padding: 20px 0;
             text-align: center;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex-shrink: 0;
         }
         main {
             flex: 1;
             width: 100%;
             max-width: 1200px;
             padding: 20px;
-            box-sizing: border-box;
+            margin: 0 auto;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
         /* 커스텀 스크롤바 클래스 */
         .custom-scrollbar::-webkit-scrollbar {
@@ -69,7 +75,7 @@
             flex-direction: column;
             gap: 6px;
             margin-bottom: 20px;
-            height: auto;
+            flex: 1;
             overflow: hidden;
             border: 1px solid #ccc;
             padding: 10px;
@@ -92,10 +98,11 @@
         @media(max-width: 767px) {
             .container {
                 flex-direction: column;
-                height: auto;
+                flex: 1;
             }
             .input-container, #output-container {
-                min-height: 400px;
+                flex: 1;
+                min-height: 0;
                 width: 100%;
             }
         }
@@ -117,7 +124,6 @@
             overflow: auto;
             background-color: #ffffff;
             outline: none;
-            min-height: 300px;
             width: 100%;
         }
         /* 출력 영역을 감싸는 컨테이너 */
@@ -135,7 +141,6 @@
             background-color: #ffffff;
             border: 1px solid #ccc;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-            min-height: 300px;
             width: 100%;
         }
         /* 옵션 섹션 스타일 */
@@ -144,6 +149,7 @@
             flex-direction: column;
             gap: 10px;
             margin-top: 10px;
+            flex-shrink: 0;
         }
         @media(min-width: 480px) {
             .options {
@@ -185,6 +191,7 @@
             background-color: #f0f2f5;
             color: #6c757d;
             font-size: 14px;
+            flex-shrink: 0;
         }
     </style>
     <!-- Marked.js 라이브러리 불러오기 -->
