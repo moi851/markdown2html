@@ -588,40 +588,15 @@
 
         // 새로운 스타일 포함 HTML 복사 함수
         function copyStyledHTML() {
-            // 모바일 디바이스 체크
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            
-            if (isMobile || !navigator.clipboard || !window.ClipboardItem) {
-                try {
-                    // 모바일용 대체 복사 방식
-                    const tempDiv = document.createElement('div');
-                    tempDiv.contentEditable = true;
-                    tempDiv.innerHTML = outputDiv.innerHTML;
-                    document.body.appendChild(tempDiv);
-                    
-                    // 선택 범위 생성 및 복사
-                    const range = document.createRange();
-                    range.selectNodeContents(tempDiv);
-                    const selection = window.getSelection();
-                    selection.removeAllRanges();
-                    selection.addRange(range);
-                    
-                    // 복사 명령 실행
-                    const successful = document.execCommand('copy');
-                    
-                    // 임시 요소 제거
-                    document.body.removeChild(tempDiv);
-                    selection.removeAllRanges();
-                    
-                    if (successful) {
-                        alert(t.copyStyledAlert);
-                    } else {
-                        alert(t.copyStyledFailAlert);
-                    }
-                } catch (err) {
-                    console.error('복사 실패:', err);
-                    alert(t.copyStyledFailAlert);
-                }
+            if (!navigator.clipboard || !window.ClipboardItem) {
+                // 구형 브라우저를 위한 폴백(fallback) 방식
+                const tempTextarea = document.createElement('textarea');
+                tempTextarea.value = outputDiv.innerText; // innerHTML 대신 innerText 사용
+                document.body.appendChild(tempTextarea);
+                tempTextarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempTextarea);
+                alert(t.copyStyledAlert);
                 return;
             }
 
