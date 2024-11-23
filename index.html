@@ -63,10 +63,10 @@
             justify-content: space-between;
             gap: 6px;
             margin-bottom: 20px;
-            height: 700px; /* 초기 높이 설정 */
-            resize: vertical; /* 리사이즈 가능하게 설정 */
+            height: 700px;
+            resize: vertical;
             overflow: auto;
-            border: 1px solid #ccc; /* 리사이즈 가능 영역 시각적 구분 */
+            border: 1px solid #ccc;
             padding: 10px;
             box-sizing: border-box;
         }
@@ -75,9 +75,9 @@
             padding: 15px;
             font-size: 16px;
             border: 1px solid #ccc;
-            resize: none; /* 내부 요소의 textarea 핸들 숨김 */
+            resize: none;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-            height: 100%; /* 부모 컨테이너의 높이에 맞춤 */
+            height: 100%;
             box-sizing: border-box;
         }
         #output {
@@ -87,7 +87,7 @@
             overflow: auto;
             background-color: #ffffff;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-            height: 100%; /* 부모 컨테이너의 높이에 맞춤 */
+            height: 100%;
             box-sizing: border-box;
         }
         .options {
@@ -129,6 +129,72 @@
             color: #6c757d;
             font-size: 14px;
         }
+
+        /* 모바일 대응 미디어 쿼리 */
+        @media screen and (max-width: 768px) {
+            main {
+                padding: 10px;
+            }
+            
+            .container {
+                flex-direction: column;
+                height: auto;
+                min-height: 500px;
+                gap: 10px;
+            }
+            
+            textarea, #output {
+                height: 300px;
+            }
+            
+            .options {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            button {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            header {
+                padding: 10px 0;
+            }
+            
+            header h1 {
+                font-size: 1.5em;
+            }
+            
+            header p {
+                font-size: 0.9em;
+            }
+            
+            .checkbox-container {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* 작은 모바일 화면 대응 */
+        @media screen and (max-width: 480px) {
+            main {
+                padding: 5px;
+            }
+            
+            textarea, #output {
+                height: 250px;
+                font-size: 14px;
+            }
+            
+            button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            
+            .checkbox-container {
+                font-size: 14px;
+            }
+        }
     </style>
     <!-- Marked.js 라이브러리 불러오기 -->
     <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
@@ -153,7 +219,7 @@
                 <label for="useInlineStyles" id="useInlineStylesLabel">Use inline styles</label>
             </div>
             <div>
-                <button id="copyStyledButton" onclick="copyStyledHTML()">Copy Content</button>
+                <button id="copyStyledButton" onclick="copyStyledHTML()"></button>
                 <button id="copyButton" onclick="copyHTML()">Copy HTML</button>
             </div>
         </div>
@@ -172,12 +238,12 @@
                 textareaPlaceholder: "Enter your Markdown...",
                 useInlineStylesLabel: "Use inline styles",
                 copyButton: "Copy HTML",
-                copyStyledButton: "Copy Content",
+                copyStyledButton: "Copy to Clipboard",
                 footer: "© 2024 Markdown Converter. All rights reserved.",
                 copyAlert: "HTML has been copied!",
-                copyStyledAlert: "HTML with styles has been copied!",
+                copyStyledAlert: "Copied to clipboard!",
                 copyFailAlert: "Failed to copy HTML.",
-                copyStyledFailAlert: "Failed to copy styled HTML."
+                copyStyledFailAlert: "Failed to copy to clipboard."
             },
             ko: {
                 title: "Markdown to HTML 변환기",
@@ -186,12 +252,12 @@
                 textareaPlaceholder: "마크다운을 입력하세요...",
                 useInlineStylesLabel: "인라인 스타일 사용",
                 copyButton: "HTML 복사하기",
-                copyStyledButton: "콘텐츠 복사",
+                copyStyledButton: "클립보드로 복사",
                 footer: "© 2024 Markdown Converter. All rights reserved.",
                 copyAlert: "HTML이 복사되었습니다!",
-                copyStyledAlert: "스타일이 포함된 HTML이 복사되었습니다!",
+                copyStyledAlert: "클립보드로 복사되었습니다!",
                 copyFailAlert: "HTML 복사에 실패했습니다.",
-                copyStyledFailAlert: "스타일이 포함된 HTML 복사에 실패했습니다."
+                copyStyledFailAlert: "클립보드로 복사하는 데 실패했습니다."
             },
             ja: {
                 title: "Markdown to HTML 変換器",
@@ -200,12 +266,12 @@
                 textareaPlaceholder: "Markdownを入力してください...",
                 useInlineStylesLabel: "インラインスタイルを使用",
                 copyButton: "HTMLをコピー",
-                copyStyledButton: "コンテンツをコピー",
+                copyStyledButton: "クリップボードにコピー",
                 footer: "© 2024 Markdown Converter. All rights reserved.",
                 copyAlert: "HTMLがコピーされました！",
-                copyStyledAlert: "スタイルを含むHTMLがコピーされました！",
+                copyStyledAlert: "クリップボードにコピーされました！",
                 copyFailAlert: "HTMLのコピーに失敗しました。",
-                copyStyledFailAlert: "スタイルを含むHTMLのコピーに失敗しました。"
+                copyStyledFailAlert: "クリップボードへのコピーに失敗しました。"
             },
             zh: {
                 title: "Markdown to HTML 转换器",
@@ -214,12 +280,12 @@
                 textareaPlaceholder: "请输入您的Markdown...",
                 useInlineStylesLabel: "使用内联样式",
                 copyButton: "复制HTML",
-                copyStyledButton: "复制内容",
+                copyStyledButton: "复制到剪贴板",
                 footer: "© 2024 Markdown Converter. All rights reserved.",
                 copyAlert: "HTML已复制！",
-                copyStyledAlert: "带样式的HTML已复制！",
+                copyStyledAlert: "已复制到剪贴板！",
                 copyFailAlert: "HTML复制失败。",
-                copyStyledFailAlert: "带样式的HTML复制失败。"
+                copyStyledFailAlert: "复制到剪贴板失败。"
             }
         };
 
