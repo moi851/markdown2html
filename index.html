@@ -631,11 +631,7 @@
             ];
 
             navigator.clipboard.write(data).then(() => {
-                if (isMobileDevice()) {
-                    alert(t.mobileClipboardAlert);
-                } else {
-                    alert(t.copyStyledAlert);
-                }
+                alert(t.copyStyledAlert);
             }).catch(err => {
                 console.error('복사 실패: ', err);
                 alert(t.copyStyledFailAlert);
