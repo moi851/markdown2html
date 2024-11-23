@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- 뷰포트 메타 태그 추가 -->
+    <!-- Viewport meta tag -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">Markdown to HTML Converter with Inline Styles</title>
+    <meta name="description" content="An online tool to quickly convert Markdown to HTML with inline styles. Easily transform your Markdown text into clean, styled HTML.">
+    <meta name="keywords" content="markdown, HTML converter, online converter, markdown tool, inline styles">
+    <meta name="author" content="Markdown Converter">
+    <title id="pageTitle">마크다운 HTML 변환기</title>
     
     <!-- Highlight.js CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
@@ -224,13 +227,13 @@
 </head>
 <body>
     <header>
-        <p id="headerTitle">Markdown to HTML Converter</p>
-        <p id="headerSubtitle">Enter Markdown and convert it to HTML</p>
+        <p id="headerTitle">Markdown to HTML 변환기</p>
+        <p id="headerSubtitle">마크다운을 입력하고 HTML로 변환하세요</p>
     </header>
     <main>
         <div class="container">
             <div class="input-container">
-                <textarea id="markdown" class="custom-scrollbar" placeholder="Enter your Markdown..."></textarea>
+                <textarea id="markdown" class="custom-scrollbar" placeholder="마크다운을 입력하세요..."></textarea>
             </div>
             <div id="output-container">
                 <div id="output" class="custom-scrollbar"></div>
@@ -239,16 +242,16 @@
         <div class="options">
             <div class="checkbox-container">
                 <input type="checkbox" id="useInlineStyles" checked>
-                <label for="useInlineStyles" id="useInlineStylesLabel">Use inline styles</label>
+                <label for="useInlineStyles" id="useInlineStylesLabel">인라인 스타일 사용</label>
             </div>
             <div style="display: flex; gap: 5px; flex-wrap: wrap;">
-                <button id="copyStyledButton" onclick="copyStyledHTML()">Copy Styled HTML</button>
-                <button id="copyButton" onclick="copyHTML()">Copy HTML</button>
+                <button id="copyStyledButton" onclick="copyStyledHTML()">클립보드로 복사</button>
+                <button id="copyButton" onclick="copyHTML()">HTML 복사</button>
             </div>
         </div>
     </main>
     <footer id="footer">
-        &copy; 2024 Markdown Converter. All rights reserved.
+        &copy; 2024 Markdown 변환기. 모든 권리 보유.
     </footer>
 
     <script>
@@ -266,7 +269,8 @@
                 copyAlert: "HTML has been copied!",
                 copyStyledAlert: "Copied to clipboard!",
                 copyFailAlert: "Failed to copy HTML.",
-                copyStyledFailAlert: "Failed to copy to clipboard."
+                copyStyledFailAlert: "Failed to copy to clipboard.",
+                mobileClipboardAlert: "Clipboard copying may be limited on mobile browsers. Please use a desktop environment."
             },
             ko: {
                 title: "Markdown to HTML 변환기",
@@ -280,7 +284,8 @@
                 copyAlert: "HTML이 복사되었습니다!",
                 copyStyledAlert: "클립보드로 복사되었습니다!",
                 copyFailAlert: "HTML 복사에 실패했습니다.",
-                copyStyledFailAlert: "클립보드로 복사하는 데 실패했습니다."
+                copyStyledFailAlert: "클립보드로 복사하는 데 실패했습니다.",
+                mobileClipboardAlert: "모바일 브라우저에서는 클립보드 복사가 제한될 수 있습니다. 데스크탑 환경에서 이용하여 주세요."
             },
             ja: {
                 title: "Markdown to HTML 変換器",
@@ -294,7 +299,8 @@
                 copyAlert: "HTMLがコピーされました！",
                 copyStyledAlert: "クリップボードにコピーされました！",
                 copyFailAlert: "HTMLのコピーに失敗しました。",
-                copyStyledFailAlert: "クリップボードへのコピーに失敗しました。"
+                copyStyledFailAlert: "クリップボードへのコピーに失敗しました。",
+                mobileClipboardAlert: "モバイルブラウザではクリップボードへのコピーが制限される場合があります。デスクトップ環境でご利用ください。"
             },
             zh: {
                 title: "Markdown to HTML 转换器",
@@ -308,7 +314,8 @@
                 copyAlert: "HTML已复制！",
                 copyStyledAlert: "已复制到剪贴板！",
                 copyFailAlert: "HTML复制失败。",
-                copyStyledFailAlert: "复制到剪贴板失败。"
+                copyStyledFailAlert: "复制到剪贴板失败。",
+                mobileClipboardAlert: "在移动浏览器上可能会限制剪贴板复制。请使用桌面环境。"
             }
         };
 
@@ -624,7 +631,11 @@
             ];
 
             navigator.clipboard.write(data).then(() => {
-                alert(t.copyStyledAlert);
+                if (isMobileDevice()) {
+                    alert(t.mobileClipboardAlert);
+                } else {
+                    alert(t.copyStyledAlert);
+                }
             }).catch(err => {
                 console.error('복사 실패: ', err);
                 alert(t.copyStyledFailAlert);
