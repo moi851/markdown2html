@@ -3,9 +3,10 @@ $(document).ready(function() {
     if (isMobileDevice()) {
         const currentLang = localStorage.getItem('language') || 'ko';
         const mobilePlaceholderNote = {
-            en: "\n\nNote: Inline style copying may be limited on mobile devices.",
-            ko: "\n\n참고: 모바일 기기에서는 인라인 스타일 복사가 제한될 수 있습니다.",
-            ja: "\n\n注意: モバイルデバイスではインラインスタイルのコピーが制限される場合があります。"
+            en: "\n\n참고: 모바일 기기에서는 클립보드를 이용한 인라인 스타일 복사가 제한될 수 있습니다.",
+            ko: "\n\n참고: 모바일 기기에서는 클립보드를 이용한 인라인 스타일 복사가 제한될 수 있습니다.",
+            ja: "\n\n참고: 모바일 기기에서는 클립보드를 이용한 인라인 스타일 복사가 제한될 수 있습니다.",
+            zh: "\n\n注意: 在移动设备上, 使用剪贴板进行内联样式复制可能会受到限制。"
         };
         
         $('#markdown').attr('placeholder', 
@@ -56,7 +57,7 @@ const translations = {
         copyButton: "HTMLをコピー",
         copyStyledButton: "クリップボードにコピー",
         footer: "© 2024 Markdown Converter. All rights reserved.",
-        copyAlert: "HTMLがコピーされました！",
+        copyAlert: "HTMLがコピーされました!",
         copyStyledAlert: "クリップボードにコピーされました！",
         copyFailAlert: "HTMLのコピーに失敗しました。",
         copyStyledFailAlert: "クリップボードへのコピーに失敗しました。",
@@ -71,7 +72,7 @@ const translations = {
         copyButton: "复制HTML",
         copyStyledButton: "复制到剪贴板",
         footer: "© 2024 Markdown Converter. All rights reserved.",
-        copyAlert: "HTML已复制！",
+        copyAlert: "HTML已复制!",
         copyStyledAlert: "已复制到剪贴板！",
         copyFailAlert: "HTML复制失败。",
         copyStyledFailAlert: "复制到剪贴板失败。",
