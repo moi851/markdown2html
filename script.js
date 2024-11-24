@@ -3,9 +3,9 @@ $(document).ready(function() {
     if (isMobileDevice()) {
         const currentLang = localStorage.getItem('language') || 'ko';
         const mobilePlaceholderNote = {
-            en: "\n\n참고: 모바일 기기에서는 클립보드를 이용한 인라인 스타일 복사가 제한될 수 있습니다.",
+            en: "\n\nNote: Copying inline styles using the clipboard may be limited on mobile devices.",
             ko: "\n\n참고: 모바일 기기에서는 클립보드를 이용한 인라인 스타일 복사가 제한될 수 있습니다.",
-            ja: "\n\n참고: 모바일 기기에서는 클립보드를 이용한 인라인 스타일 복사가 제한될 수 있습니다.",
+            ja: "\n\n注意: モバイルデバイスでは、クリップボードを使用したインラインスタイルのコピーが制限される場合があります。",
             zh: "\n\n注意: 在移动设备上, 使用剪贴板进行内联样式复制可能会受到限制。"
         };
         
