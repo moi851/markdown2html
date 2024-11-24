@@ -351,15 +351,27 @@ function updateOutput() {
 // 초기 출력 업데이트
 updateOutput();
 
-// 기존 HTML 복사 함수 (스타일 제외)
+// HTML 복사 함수
 function copyHTML() {
-    const tempTextarea = document.createElement('textarea');
-    tempTextarea.value = outputDiv.innerHTML;
-    document.body.appendChild(tempTextarea);
-    tempTextarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(tempTextarea);
-    alert(t.copyAlert);
+    const options = {
+        indent_size: 2,
+        indent_char: ' ',
+        max_preserve_newlines: 1,
+        preserve_newlines: true,
+        keep_array_indentation: false,
+        break_chained_methods: false,
+        indent_scripts: 'keep',
+        brace_style: 'collapse',
+        space_before_conditional: true,
+        unescape_strings: false,
+        wrap_line_length: 0
+    };
+
+    const formattedHTML = html_beautify(outputDiv.innerHTML, options);
+    
+    navigator.clipboard.writeText(formattedHTML)
+        .then(() => alert(t.copyAlert))
+        .catch(() => alert(t.copyFailAlert));
 }
 
 // 새로운 스타일 포함 HTML 복사 함수
