@@ -376,40 +376,36 @@ function copyHTML() {
 
 // 새로운 스타일 포함 HTML 복사 함수
 function copyStyledHTML() {
-    if (!navigator.clipboard || !window.ClipboardItem) {
-        // 구형 브라우저를 위한 폴백(fallback) 방식
-        const tempTextarea = document.createElement('textarea');
-        tempTextarea.value = outputDiv.innerText; // innerHTML 대신 innerText 사용
-        document.body.appendChild(tempTextarea);
-        tempTextarea.select();
+    let htmlContent = outputDiv.innerHTML;
+
+    if (useInlineStyles) {
+        const $clonedDiv = $(outputDiv).clone(true);
+        applyHighlightInlineStyles($clonedDiv[0]);
+        $clonedDiv.find('*').removeClass();
+        htmlContent = $clonedDiv.html();
+    }
+
+    if (!navigator.clipboard) {
+        // 클립보드 API를 지원하지 않는 경우 폴백
+        const $tempTextarea = $('<textarea>');
+        $tempTextarea.val(htmlContent);
+        $('body').append($tempTextarea);
+        $tempTextarea.select();
         document.execCommand('copy');
-        document.body.removeChild(tempTextarea);
+        $tempTextarea.remove();
         alert(t.copyStyledAlert);
         return;
     }
 
-    let htmlContent = outputDiv.innerHTML;
-
-    if (useInlineStyles) {
-        const clonedDiv = outputDiv.cloneNode(true);
-        applyHighlightInlineStyles(clonedDiv);
-        clonedDiv.querySelectorAll('*').forEach(el => {
-            el.className = '';
-        });
-        htmlContent = clonedDiv.innerHTML;
-    }
-
-    // HTML과 일반 텍스트 모두 클립보드에 복사
+    // 클립보드 API를 지원하는 경우
     const plainText = outputDiv.innerText;
     const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
     const textBlob = new Blob([plainText], { type: 'text/plain' });
-    
-    const data = [
-        new ClipboardItem({
-            'text/html': htmlBlob,
-            'text/plain': textBlob
-        })
-    ];
+
+    const data = [new ClipboardItem({
+        'text/html': htmlBlob,
+        'text/plain': textBlob
+    })];
 
     navigator.clipboard.write(data).then(() => {
         alert(t.copyStyledAlert);
@@ -417,5 +413,4 @@ function copyStyledHTML() {
         console.error('복사 실패: ', err);
         alert(t.copyStyledFailAlert);
     });
-
 }
